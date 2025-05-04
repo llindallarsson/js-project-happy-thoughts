@@ -1,5 +1,9 @@
+import { HappyThoughtsPosts } from "./components/HappyThoughtsPosts";
+
 export const App = () => {
   return (
-    <h1>Happy Thoughts</h1>
-  )
-}
+    <>
+      <HappyThoughtsPosts />
+    </>
+  );
+};
