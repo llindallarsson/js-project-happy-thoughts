@@ -7,6 +7,7 @@ const StyledForm = styled.form`
   gap: 1rem;
   background-color: #f0eeee;
   padding: 1rem;
+  margin-bottom: 2rem;
   border: 1px solid black;
   box-shadow: 8px 8px 0px black;
 `;
@@ -27,6 +28,7 @@ const StyledTextarea = styled.textarea`
 `;
 
 const FormButton = styled.button`
+  display: inline-block;
   background-color: #ffa3a5;
   padding: 8px 16px;
   border-radius: 50px;
@@ -34,6 +36,7 @@ const FormButton = styled.button`
   cursor: pointer;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
+  align-self: flex-start;
 `;
 
 export const HappyThoughtsForm = ({ onSubmit }) => {

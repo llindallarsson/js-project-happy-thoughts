@@ -1,13 +1,13 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { HappyThoughtsForm } from "./HappyThoughtsForm";
+import { LikeComponent } from "./LikeComponent";
 
 const AppContainer = styled.section`
-  display: flex;
-  flex-direction: column;
-  /* align-items: center;
-  justify-content: center; */
-  gap: 2rem;
+  width: 100%;
+  max-width: 800px;
+  padding: 1rem;
+  margin: 0 auto;
 `;
 const PostsContainer = styled.div`
   display: flex;
@@ -48,7 +48,7 @@ export const HappyThoughtsPosts = () => {
         {posts.map((i) => (
           <StyledDiv key={i.id}>
             <PostsText>{i.message}</PostsText>
-            <LikeButton>❤️</LikeButton>
+            <LikeComponent />
           </StyledDiv>
         ))}
       </PostsContainer>
