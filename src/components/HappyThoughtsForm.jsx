@@ -1,6 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 
+const MAX_CHARACTERS = 120;
+
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -25,6 +27,8 @@ const StyledTextarea = styled.textarea`
   overflow-y: auto;
   white-space: pre-wrap;
   word-wrap: break-word;
+  border: 2px solid ${(props) => (props["aria-invalid"] ? "red" : "black")};
+  resize: vertical;
 `;
 
 const FormButton = styled.button`
@@ -39,10 +43,24 @@ const FormButton = styled.button`
   align-self: flex-start;
 `;
 
+const CharacterCount = styled.p`
+  font-size: 14px;
+  color: ${(props) => (props.exceeded ? "red" : "black")};
+  margin: 0;
+`;
+
+const ErrorMessage = styled.p`
+  color: red;
+  font-size: 14px;
+  margin: 0;
+`;
+
 export const HappyThoughtsForm = ({ onSubmit }) => {
   const [message, setMessage] = useState("");
+  const isTooLong = message.length > MAX_CHARACTERS;
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (isTooLong) return;
     onSubmit(message);
     setMessage("");
   };
@@ -53,14 +71,29 @@ export const HappyThoughtsForm = ({ onSubmit }) => {
         What's making you happy right now?
       </FormLabel>
       <StyledTextarea
-        type="text"
-        placeholder="Type your message..."
-        value={message}
         id="messageInput"
         name="message"
+        placeholder="Type your message..."
+        value={message}
         onChange={(event) => setMessage(event.target.value)}
+        aria-invalid={isTooLong}
+        required
       />
-      <FormButton type="submit"> ❤️ Send Happy Thought ❤️ </FormButton>
+
+      <CharacterCount exceeded={isTooLong}>
+        {message.length} / {MAX_CHARACTERS}
+      </CharacterCount>
+
+      {isTooLong && (
+        <ErrorMessage role="alert">
+          Your message is too long. Max {MAX_CHARACTERS} characters.
+        </ErrorMessage>
+      )}
+
+      <FormButton type="submit" disabled={isTooLong}>
+        {" "}
+        ❤️ Send Happy Thought ❤️{" "}
+      </FormButton>
     </StyledForm>
   );
 };

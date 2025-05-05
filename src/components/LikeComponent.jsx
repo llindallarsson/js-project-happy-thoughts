@@ -2,26 +2,38 @@ import { useState } from "react";
 import styled from "styled-components";
 
 const LikeButton = styled.button`
-  background-color: #f0eeee;
+  background-color: ${(props) => (props.$liked ? "#ffcccb" : "#f0eeee")};
   width: 48px;
   height: 48px;
   border-radius: 100%;
   border: none;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 `;
 
 const NumberOfLikes = styled.p``;
 
+const LikeWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
 export const LikeComponent = () => {
   const [likes, setLikes] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
+
   const handleLike = () => {
-    setLikes(likes + 1);
+    setLikes((prev) => (isLiked ? prev - 1 : prev + 1));
+    setIsLiked(!isLiked);
   };
 
   return (
-    <div>
-      <LikeButton onClick={handleLike}>❤️</LikeButton>
+    <LikeWrapper>
+      <LikeButton onClick={handleLike} $liked={isLiked}>
+        ❤️
+      </LikeButton>
       <NumberOfLikes>x {likes}</NumberOfLikes>
-    </div>
+    </LikeWrapper>
   );
 };
