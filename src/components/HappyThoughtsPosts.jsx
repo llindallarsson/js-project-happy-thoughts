@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { HappyThoughtsForm } from "./HappyThoughtsForm";
 import { LikeComponent } from "./LikeComponent";
+import { TimeComponent } from "./TimeComponent";
 
 const AppContainer = styled.section`
   width: 100%;
@@ -27,13 +28,10 @@ const PostsText = styled.p`
   word-wrap: break-word;
 `;
 
-const LikeButton = styled.button`
-  background-color: #f0eeee;
-  width: 48px;
-  height: 48px;
-  border-radius: 100%;
-  border: none;
-  cursor: pointer;
+const DetailWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const HappyThoughtsPosts = () => {
@@ -48,7 +46,10 @@ export const HappyThoughtsPosts = () => {
         {posts.map((i) => (
           <StyledDiv key={i.id}>
             <PostsText>{i.message}</PostsText>
-            <LikeComponent />
+            <DetailWrapper>
+              <LikeComponent />
+              <TimeComponent />
+            </DetailWrapper>
           </StyledDiv>
         ))}
       </PostsContainer>

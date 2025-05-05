@@ -27,7 +27,7 @@ const StyledTextarea = styled.textarea`
   overflow-y: auto;
   white-space: pre-wrap;
   word-wrap: break-word;
-  border: 2px solid ${(props) => (props["aria-invalid"] ? "red" : "black")};
+  border: 1px solid ${(props) => (props["aria-invalid"] ? "red" : "black")};
   resize: vertical;
 `;
 

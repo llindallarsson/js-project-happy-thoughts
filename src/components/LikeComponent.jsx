@@ -11,7 +11,9 @@ const LikeButton = styled.button`
   transition: background-color 0.3s ease;
 `;
 
-const NumberOfLikes = styled.p``;
+const NumberOfLikes = styled.p`
+  color: #888888;
+`;
 
 const LikeWrapper = styled.div`
   display: flex;
