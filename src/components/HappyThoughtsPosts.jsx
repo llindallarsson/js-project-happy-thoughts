@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { HappyThoughtsPost } from "./HappyThoughtsPost";
+import { LoadingComponent } from "./LoadingComponent";
 
 const PostsContainer = styled.div`
   display: flex;
@@ -9,7 +10,11 @@ const PostsContainer = styled.div`
 
 export const HappyThoughtsPosts = ({ posts = [], loading, error }) => {
   if (loading) {
-    return <p>Loading...</p>;
+    return <LoadingComponent />;
+  }
+
+  if (!posts.length) {
+    return <p>No posts yet.</p>;
   }
 
   if (error) {

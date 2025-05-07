@@ -21,6 +21,8 @@ export const App = () => {
     setLoading(true);
     setError(null);
     try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       const response = await fetch(url);
       const data = await response.json();
       console.log("DATA FROM API:", data);
