@@ -53,12 +53,12 @@ const ErrorMessage = styled.p`
   margin: 0;
 `;
 
+const MAX_CHARACTERS = 140;
+const MIN_CHARACTERS = 5;
+
 export const HappyThoughtsForm = ({ onSubmit }) => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-
-  const MAX_CHARACTERS = 140;
-  const MIN_CHARACTERS = 5;
 
   const isTooLong = message.length > MAX_CHARACTERS;
   const isTooShort = message.length > 0 && message.length < MIN_CHARACTERS;
@@ -67,7 +67,7 @@ export const HappyThoughtsForm = ({ onSubmit }) => {
     event.preventDefault();
 
     if (isTooLong || isTooShort) {
-      setError("Message must be between 5 and 140 characters.");
+      setError("Your happy thought must be between 5 and 140 characters.");
       return;
     }
 
@@ -94,8 +94,20 @@ export const HappyThoughtsForm = ({ onSubmit }) => {
       onSubmit(message);
       setMessage("");
     } catch (err) {
-      console.error(err); // ← använder variabeln, så ESLint blir nöjd
+      console.error(err);
       setError("Network error. Please try again.");
+    }
+  };
+
+  const handleChange = (event) => {
+    const newMessage = event.target.value;
+    setMessage(newMessage);
+
+    if (
+      newMessage.length >= MIN_CHARACTERS &&
+      newMessage.length <= MAX_CHARACTERS
+    ) {
+      setError("");
     }
   };
 
@@ -108,9 +120,9 @@ export const HappyThoughtsForm = ({ onSubmit }) => {
       <StyledTextarea
         id='messageInput'
         name='message'
-        placeholder='Type your message...'
+        placeholder='Type your happy thought here...'
         value={message}
-        onChange={(event) => setMessage(event.target.value)}
+        onChange={handleChange}
         aria-invalid={isTooLong || isTooShort}
         required
       />
@@ -121,9 +133,7 @@ export const HappyThoughtsForm = ({ onSubmit }) => {
 
       {error && <ErrorMessage role='alert'>{error}</ErrorMessage>}
 
-      <FormButton type='submit' disabled={isTooLong || isTooShort}>
-        ❤️ Send Happy Thought ❤️
-      </FormButton>
+      <FormButton type='submit'>❤️ Send Happy Thought ❤️</FormButton>
     </StyledForm>
   );
 };

@@ -1,40 +1,40 @@
 import { useState, useEffect } from "react";
+import styled from "styled-components";
 import { HappyThoughtsForm } from "./components/HappyThoughtsForm";
 import { HappyThoughtsPosts } from "./components/HappyThoughtsPosts";
-import styled from "styled-components";
 
 const AppContainer = styled.section`
   width: 100%;
   max-width: 800px;
   padding: 1rem;
   margin: 0 auto;
+
+  @media (min-width: 667px) {
+    padding: 4rem;
+  }
 `;
+
+const API_URL = "https://happy-thoughts-ux7hkzgmwa-uc.a.run.app/thoughts";
 
 export const App = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const url = "https://happy-thoughts-ux7hkzgmwa-uc.a.run.app/thoughts";
-
   const fetchPosts = async () => {
     setLoading(true);
     setError(null);
+
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      const response = await fetch(url);
+      const response = await fetch(API_URL);
       const data = await response.json();
-      console.log("DATA FROM API:", data);
 
-      if (response.ok) {
-        setPosts(data);
-      } else {
-        throw new Error("Failed to fetch posts");
-      }
+      if (!response.ok) throw new Error("Fetch error");
+      setPosts(data);
     } catch (err) {
       console.error(err);
-      setError("Something went wrong while fetching posts.");
+      setError("Could not load posts.");
     } finally {
       setLoading(false);
     }
