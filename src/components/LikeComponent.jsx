@@ -21,13 +21,27 @@ const LikeWrapper = styled.div`
   gap: 0.5rem;
 `;
 
-export const LikeComponent = () => {
-  const [likes, setLikes] = useState(0);
+export const LikeComponent = ({ thoughtId, initialHearts }) => {
+  const [likes, setLikes] = useState(initialHearts);
   const [isLiked, setIsLiked] = useState(false);
 
-  const handleLike = () => {
-    setLikes((prev) => (isLiked ? prev - 1 : prev + 1));
-    setIsLiked(!isLiked);
+  const handleLike = async () => {
+    try {
+      const response = await fetch(
+        `https://happy-thoughts-ux7hkzgmwa-uc.a.run.app/thoughts/${thoughtId}/like`,
+        {
+          method: "POST",
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to like thought");
+      }
+
+      setLikes((prev) => prev + 1);
+      setIsLiked(true); // valfritt
+    } catch (error) {
+      console.error("Failed to like thought:", error);
+    }
   };
 
   return (

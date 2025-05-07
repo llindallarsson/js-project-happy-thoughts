@@ -1,8 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-const MAX_CHARACTERS = 120;
-
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -45,7 +43,7 @@ const FormButton = styled.button`
 
 const CharacterCount = styled.p`
   font-size: 14px;
-  color: ${(props) => (props.exceeded ? "red" : "black")};
+  color: ${(props) => (props.$exceeded ? "red" : "black")};
   margin: 0;
 `;
 
@@ -57,42 +55,74 @@ const ErrorMessage = styled.p`
 
 export const HappyThoughtsForm = ({ onSubmit }) => {
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
+  const MAX_CHARACTERS = 140;
+  const MIN_CHARACTERS = 5;
+
   const isTooLong = message.length > MAX_CHARACTERS;
-  const handleSubmit = (event) => {
+  const isTooShort = message.length > 0 && message.length < MIN_CHARACTERS;
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (isTooLong) return;
-    onSubmit(message);
-    setMessage("");
+
+    if (isTooLong || isTooShort) {
+      setError("Message must be between 5 and 140 characters.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "https://happy-thoughts-ux7hkzgmwa-uc.a.run.app/thoughts",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.errors?.message?.message || "Something went wrong.");
+        return;
+      }
+
+      setError("");
+      onSubmit(message);
+      setMessage("");
+    } catch (err) {
+      console.error(err); // ← använder variabeln, så ESLint blir nöjd
+      setError("Network error. Please try again.");
+    }
   };
 
   return (
     <StyledForm onSubmit={handleSubmit}>
-      <FormLabel htmlFor="messageInput">
+      <FormLabel htmlFor='messageInput'>
         What's making you happy right now?
       </FormLabel>
+
       <StyledTextarea
-        id="messageInput"
-        name="message"
-        placeholder="Type your message..."
+        id='messageInput'
+        name='message'
+        placeholder='Type your message...'
         value={message}
         onChange={(event) => setMessage(event.target.value)}
-        aria-invalid={isTooLong}
+        aria-invalid={isTooLong || isTooShort}
         required
       />
 
-      <CharacterCount exceeded={isTooLong}>
+      <CharacterCount $exceeded={isTooLong}>
         {message.length} / {MAX_CHARACTERS}
       </CharacterCount>
 
-      {isTooLong && (
-        <ErrorMessage role="alert">
-          Your message is too long. Max {MAX_CHARACTERS} characters.
-        </ErrorMessage>
-      )}
+      {error && <ErrorMessage role='alert'>{error}</ErrorMessage>}
 
-      <FormButton type="submit" disabled={isTooLong}>
-        {" "}
-        ❤️ Send Happy Thought ❤️{" "}
+      <FormButton type='submit' disabled={isTooLong || isTooShort}>
+        ❤️ Send Happy Thought ❤️
       </FormButton>
     </StyledForm>
   );

@@ -1,42 +1,25 @@
-import { useState, useEffect } from "react";
-import styled from "styled-components";
+import { useEffect, useState } from "react";
 
-const TimeOfPost = styled.p`
-  color: #888888;
-`;
-
-const getTimeAgo = (timestamp) => {
-  const seconds = Math.floor((Date.now() - timestamp) / 1000);
-
-  if (seconds < 60) {
-    return `${seconds} second${seconds !== 1 ? "s" : ""} ago`;
-  }
-
+const getTimeAgo = (createdAt) => {
+  const seconds = Math.floor((Date.now() - new Date(createdAt)) / 1000);
+  if (seconds < 60) return `${seconds} second${seconds !== 1 ? "s" : ""} ago`;
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) {
-    return `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
-  }
-
+  if (minutes < 60) return `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) {
-    return `${hours} hour${hours !== 1 ? "s" : ""} ago`;
-  }
-
+  if (hours < 24) return `${hours} hour${hours !== 1 ? "s" : ""} ago`;
   const days = Math.floor(hours / 24);
   return `${days} day${days !== 1 ? "s" : ""} ago`;
 };
 
-export const TimeComponent = () => {
-  const [postTime] = useState(Date.now()); // Spara postens publiceringstid
-  const [timeAgo, setTimeAgo] = useState(getTimeAgo(postTime));
+export const TimeComponent = ({ createdAt }) => {
+  const [timeAgo, setTimeAgo] = useState(getTimeAgo(createdAt));
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeAgo(getTimeAgo(postTime));
-    }, 10000); // Uppdatera var 10:e sekund (ändra vid behov)
-
+      setTimeAgo(getTimeAgo(createdAt));
+    }, 10000);
     return () => clearInterval(interval);
-  }, [postTime]);
+  }, [createdAt]);
 
-  return <TimeOfPost>{timeAgo}</TimeOfPost>;
+  return <p>{timeAgo}</p>;
 };
