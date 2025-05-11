@@ -1,4 +1,9 @@
 import { useEffect, useState } from "react";
+import styled from "styled-components";
+
+const StyledP = styled.p`
+  color: #888888;
+`;
 
 const getTimeAgo = (createdAt) => {
   const seconds = Math.floor((Date.now() - new Date(createdAt)) / 1000);
@@ -21,5 +26,5 @@ export const TimeComponent = ({ createdAt }) => {
     return () => clearInterval(interval);
   }, [createdAt]);
 
-  return <p>{timeAgo}</p>;
+  return <StyledP>{timeAgo}</StyledP>;
 };

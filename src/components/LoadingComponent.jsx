@@ -13,7 +13,7 @@ const Dot = styled.div`
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #ffa3a5;
+  background-color: black;
   animation: ${dotAnimation} 1.2s infinite;
   animation-delay: ${({ delay }) => delay}s;
 `;
