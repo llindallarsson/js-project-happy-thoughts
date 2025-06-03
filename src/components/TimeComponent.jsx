@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const StyledP = styled.p`
-  color: #888888;
+  color: #747272;
 `;
 
 const getTimeAgo = (createdAt) => {

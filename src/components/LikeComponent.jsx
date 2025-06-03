@@ -12,7 +12,7 @@ const LikeButton = styled.button`
 `;
 
 const NumberOfLikes = styled.p`
-  color: #888888;
+  color: #747272;
 `;
 
 const LikeWrapper = styled.div`
