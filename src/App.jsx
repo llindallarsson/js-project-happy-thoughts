@@ -14,7 +14,7 @@ const AppContainer = styled.section`
   }
 `;
 
-const API_URL = "https://happy-thoughts-ux7hkzgmwa-uc.a.run.app/thoughts";
+const API_URL = "https://happy-thoughts-api-4ful.onrender.com/";
 
 export const App = () => {
   const [posts, setPosts] = useState([]);
