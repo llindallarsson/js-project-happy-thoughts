@@ -1,6 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8081";
+
 const LikeButton = styled.button`
   background-color: ${(props) => (props.$liked ? "#ffcccb" : "#f0eeee")};
   width: 48px;
@@ -26,19 +28,24 @@ export const LikeComponent = ({ thoughtId, initialHearts }) => {
   const [isLiked, setIsLiked] = useState(false);
 
   const handleLike = async () => {
+    if (isLiked) return;
+
     try {
-      const response = await fetch(
-        `https://happy-thoughts-api-4ful.onrender.com/thoughts/${thoughtId}/like`,
-        {
-          method: "POST",
-        }
-      );
+      const response = await fetch(`${API_URL}/thoughts/${thoughtId}/like`, {
+        method: "POST",
+      });
+
       if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Backend error:", errorData);
         throw new Error("Failed to like thought");
       }
 
-      setLikes((prev) => prev + 1);
-      setIsLiked(true); // valfritt
+      const data = await response.json();
+      console.log("Like successful:", data);
+
+      setLikes(data.hearts);
+      setIsLiked(true);
     } catch (error) {
       console.error("Failed to like thought:", error);
     }

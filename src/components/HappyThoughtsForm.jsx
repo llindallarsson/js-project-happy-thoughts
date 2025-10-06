@@ -63,7 +63,7 @@ export const HappyThoughtsForm = ({ onSubmit }) => {
   const isTooLong = message.length > MAX_CHARACTERS;
   const isTooShort = message.length > 0 && message.length < MIN_CHARACTERS;
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
     if (isTooLong || isTooShort) {
@@ -71,32 +71,9 @@ export const HappyThoughtsForm = ({ onSubmit }) => {
       return;
     }
 
-    try {
-      const response = await fetch(
-        "https://happy-thoughts-api-4ful.onrender.com/thoughts",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ message }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.errors?.message?.message || "Something went wrong.");
-        return;
-      }
-
-      setError("");
-      onSubmit(message);
-      setMessage("");
-    } catch (err) {
-      console.error(err);
-      setError("Network error. Please try again.");
-    }
+    onSubmit(message);
+    setMessage("");
+    setError("");
   };
 
   const handleChange = (event) => {
