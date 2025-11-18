@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8081";
+
 export const SignupForm = ({ onSignup }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -7,7 +9,7 @@ export const SignupForm = ({ onSignup }) => {
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:8081/users", {
+    const response = await fetch(`${API_URL}/users`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
