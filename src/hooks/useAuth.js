@@ -10,9 +10,9 @@ export const useAuth = () => {
 
   const setAuthState = (data) => {
     setAccessToken(data.accessToken);
-    setUsername(data.userId);
+    setUsername(data.username);
     localStorage.setItem("accessToken", data.accessToken);
-    localStorage.setItem("username", data.userId);
+    localStorage.setItem("username", data.username);
   };
 
   const logout = () => {
