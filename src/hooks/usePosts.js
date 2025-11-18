@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8081";
 
@@ -8,18 +8,21 @@ export const usePosts = (accessToken, username) => {
   const [postLoading, setPostLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchPosts = useCallback(async () => {
+  const fetchPosts = useCallback(async (accessToken) => {
     setLoading(true);
     setError(null);
 
     try {
-      const response = await fetch(`${API_URL}/thoughts`);
+      let data = [];
+      if (accessToken) {
+        const response = await fetch(`${API_URL}/thoughts`);
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        data = await response.json();
       }
-
-      const data = await response.json();
       setPosts(data);
     } catch (err) {
       console.error("Fetch error:", err);
